@@ -1,10 +1,10 @@
-/* global malarkey:false, moment:false */
+/* global _:false, moment:false */
 (function() {
   'use strict';
 
   angular
     .module('tddWorkshop')
-    .constant('malarkey', malarkey)
+    .constant('lodash', _)
     .constant('moment', moment);
 
 })();
