@@ -1,12 +1,13 @@
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('tddWorkshop')
     .config(config);
 
-  /** @ngInject */
-  function config($logProvider, toastrConfig) {
+  config.$inject = ['$logProvider', '$routeProvider', 'toastrConfig'];
+
+  function config($logProvider, $routeProvider, toastrConfig) {
     // Enable log
     $logProvider.debugEnabled(false);
 
@@ -16,6 +17,16 @@
     toastrConfig.positionClass = 'toast-top-right';
     toastrConfig.preventDuplicates = true;
     toastrConfig.progressBar = true;
+
+    $routeProvider
+      .when('/', {
+        controller: 'MainController',
+        controllerAs: 'vm',
+        templateUrl: 'app/main/main.html'
+      })
+      .otherwise('/');
+
+    console.log('config')
   }
 
 })();

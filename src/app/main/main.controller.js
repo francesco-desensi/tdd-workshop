@@ -8,5 +8,6 @@
   MainController.$inject = [];
 
   function MainController() {
+    console.log('ctrl')
   }
 })();

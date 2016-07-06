@@ -7,9 +7,9 @@
     var toastr;
 
     beforeEach(module('tddWorkshop'));
+
     beforeEach(inject(function() {
     }));
-
     
   });
 })();

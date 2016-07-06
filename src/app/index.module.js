@@ -5,12 +5,11 @@
     .module('tddWorkshop', [
       'ngAnimate', 
       'ngCookies', 
-      'ngTouch', 
+      'ngRoute',
       'ngSanitize', 
       'ngMessages', 
       'ngAria', 
       'ui.bootstrap', 
       'toastr'
     ]);
-
 })();
