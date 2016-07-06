@@ -1,15 +1,16 @@
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('tddWorkshop', [
-      'ngAnimate', 
-      'ngCookies', 
+      'ngAnimate',
+      'ngCookies',
       'ngRoute',
-      'ngSanitize', 
-      'ngMessages', 
-      'ngAria', 
-      'ui.bootstrap', 
-      'toastr'
+      'ngSanitize',
+      'ngMessages',
+      'ngAria',
+      'ui.bootstrap',
+      'toastr',
+      'tddWorkshop.components'
     ]);
 })();
