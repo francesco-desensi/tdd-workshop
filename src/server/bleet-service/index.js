@@ -40,11 +40,10 @@ var bleets = {
 };
 
 var nextId = 6;
-var prefix = '/api'
+var prefix = '/api';
+var bleetUri = prefix + '/bleets';
 
-app.get(prefix + '/bleets', function (req, res) {
-  //get all posts 
-
+app.get(bleetUri, function (req, res) {
   var sortedBleets = _
     .chain(bleets)
     .sortBy('postDate')
@@ -55,38 +54,27 @@ app.get(prefix + '/bleets', function (req, res) {
   res.status(200).send(sortedBleets);
 });
 
-app.post(prefix + '/bleets', function (req, res) {
-  //add a post
-
-  var bleet = {
+app.post(bleetUri, function (req, res) {
+  bleets[nextId] = {
     id: nextId,
     postDate: req.body.postDate || new Date().toJSON(),
     text: req.body.text,
     author: '/user/1'
   };
-
-  bleets[nextId] = bleet;
-
   nextId++;
 
   res.status(201).end();
 });
 
-app.patch(prefix + '/bleets', function (req, res) {
-  //update a post  
-
+app.patch(bleetUri, function (req, res) {
   var bleet = bleets[req.body.id];
-
   bleet.text = req.body.text;
 
   res.status(200).end();
 });
 
-app['delete'](prefix + '/bleets', function (req, res) {
-  //delete a post
-
+app['delete'](bleetUri, function (req, res) {
   delete bleets[req.body.id];
-
   res.status(200).end();
 });
 
