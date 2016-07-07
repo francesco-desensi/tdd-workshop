@@ -3,7 +3,7 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
-var serverApp = require('./express/server.js');
+var serverApp = require('./../src/server/server.js');
 
 var browserSync = require('browser-sync');
 var browserSyncSpa = require('browser-sync-spa');
