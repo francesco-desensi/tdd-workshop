@@ -3,7 +3,7 @@
 
   angular
     .module('tddWorkshop.components')
-    .directive('navbar', navbar);
+    .component('navbar', navbar());
 
   navbar.$inject = [];
 
@@ -12,7 +12,6 @@
       controller: NavbarController,
       controllerAs: 'vm',
       templateUrl: 'app/components/navbar.directive.html',
-      restrict: 'E',
       scope: {}
     };
     return directive;
