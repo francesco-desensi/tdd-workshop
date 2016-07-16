@@ -7,24 +7,23 @@ global.AssertionError = chai.AssertionError;
 global.Assertion = chai.Assertion;
 global.assert = chai.assert;
 
-var BleetRequestHandler = require('../bleet-request-handler.js');
+var UserRequestHandler = require('../user-request-handler.js');
 
-describe('Bleet service request handler', function(){
-  var req, res, requestHandler, bleets, statusSpy;
+describe('User service request handler', function(){
+  var req, res, requestHandler, users, statusSpy;
 
   beforeEach(function(){
-    bleets = {
+    users = {
       1: {
         id: 1,
-        postDate: new Date(1466791000000).toJSON(),
-        text: 'Have you guys seen the John Papa Style Guide?! #socool',
-        author: '/user/2'
+        username: 'test',
+        fullName: "Tester McTester"
       }
     };
 
     req = res = {};
     res.type = sinon.stub();
-    requestHandler = new BleetRequestHandler(bleets);
+    requestHandler = new UserRequestHandler(users);
 
     statusSpy = res.status = sinon.spy(function(){
       return {
@@ -34,7 +33,7 @@ describe('Bleet service request handler', function(){
     });
   });
 
-  describe('When a get is called', function(){
+  describe('When getAll is called', function(){
 
     it('should respond with a 200 code', function(){
       requestHandler.getAll(req, res);
@@ -42,7 +41,7 @@ describe('Bleet service request handler', function(){
       expect(statusSpy.calledWith(200)).to.be.true;
     });
 
-    it('should send a response containing the correct number of bleets', function(){
+    it('should send a response containing the correct number of users', function(){
       var sendSpy = res.send = sinon.spy();
       res.type = sinon.stub();
       res.status = sinon.stub().returns({
@@ -57,12 +56,38 @@ describe('Bleet service request handler', function(){
     });
   });
 
-  describe('When a post is called', function(){
+  describe('When get is called', function(){
+
+    beforeEach(function(){
+      req.params = {
+        user_id: 1
+      }
+    });
+
+    it('should respond with a 200 code for a valid user id', function(){
+      requestHandler.get(req, res);
+
+      expect(statusSpy.calledWith(200)).to.be.true;
+    });
+
+    it('should send a response with the correct user', function(){
+      var sendSpy = res.send = sinon.spy();
+      res.type = sinon.stub();
+      res.status = sinon.stub().returns({
+        send: sendSpy
+      });
+
+      requestHandler.get(req, res);
+
+      expect(sendSpy.calledWith(users['1'])).to.be.true;
+    });
+  });
+
+  describe('When post is called', function(){
     beforeEach(function(){
       req.body = {
-        postDate: new Date().toJSON(),
-        text: "This is a test",
-        author: '/users/1'
+        username: 'pants',
+        fullName: 'Mr. Pants'
       };
     });
 
@@ -72,24 +97,26 @@ describe('Bleet service request handler', function(){
       expect(statusSpy.calledWith(201)).to.be.true;
     });
 
-    it('should respond with a 400 code when an author is not specified', function(){
-      delete req.body['author'];
+    it('should reject the request with 400 if a username is not provided.', function(){
+      delete req.body['username'];
       requestHandler.post(req, res);
 
       expect(statusSpy.calledWith(400)).to.be.true;
     });
 
-    it('should respond with a 400 code when an author value does not match the specified pattern', function(){
-      req.body.author = 'this is not right';
+    it('should reject the request with 400 if a username already exists.', function(){
+      req.body.username = 'test';
       requestHandler.post(req, res);
 
       expect(statusSpy.calledWith(400)).to.be.true;
     });
 
-    it('should add the new bleet to the array', function(){
+    it('should add the new user to the array with the correct values', function(){
       requestHandler.post(req, res);
 
-      expect(Object.keys(bleets).length).to.be.equal(2);
+      expect(Object.keys(users).length).to.be.equal(2);
+      expect(users['2'].username).to.be.equal('pants');
+      expect(users['2'].fullName).to.be.equal('Mr. Pants');
     });
   });
 
@@ -97,11 +124,11 @@ describe('Bleet service request handler', function(){
     beforeEach(function(){
       req.body = {
         id: 1,
-        text: "This is the new text"
+        fullName: "New name"
       };
 
       req.params = {
-        bleet_id: 1
+        user_id: 1
       };
     });
 
@@ -111,17 +138,17 @@ describe('Bleet service request handler', function(){
       expect(statusSpy.calledWith(200)).to.be.true;
     });
 
-    it('should respond with a 404 code when the request bleet cannot be found', function(){
-      req.params.bleet_id = 49;
+    it('should respond with a 404 code when the requested user cannot be found', function(){
+      req.params.user_id = 49;
       requestHandler.patch(req, res);
 
       expect(statusSpy.calledWith(404)).to.be.true;
     });
 
-    it('should change the value', function(){
+    it('should change the user\'s full name', function(){
       requestHandler.patch(req, res);
 
-      expect(bleets['1'].text).to.be.equal("This is the new text")
+      expect(users['1'].fullName).to.be.equal("New name")
     });
   });
 
@@ -132,7 +159,7 @@ describe('Bleet service request handler', function(){
       };
 
       req.params = {
-        bleet_id: 1
+        user_id: 1
       };
     });
 
@@ -142,8 +169,8 @@ describe('Bleet service request handler', function(){
       expect(statusSpy.calledWith(200)).to.be.true;
     });
 
-    it('should respond with a 404 code when the request bleet cannot be found', function(){
-      req.params.bleet_id = 49;
+    it('should respond with a 404 code when the requested user cannot be found', function(){
+      req.params.user_id = 49;
       requestHandler.delete(req, res);
 
       expect(statusSpy.calledWith(404)).to.be.true;
@@ -152,7 +179,7 @@ describe('Bleet service request handler', function(){
     it('should delete the record', function(){
       requestHandler.delete(req, res);
 
-      expect(Object.keys(bleets).length).to.be.equal(0);
+      expect(Object.keys(users).length).to.be.equal(0);
     });
   });
 });

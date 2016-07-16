@@ -3,8 +3,9 @@ var _ = require('lodash');
 function BleetRequestHandler(seedData){
   var bleets = seedData;
   var nextId = Object.keys(bleets).length+1;
+  var authorUriPattern = /^\/users\/\d+$/;
 
-  this.get = function(req, res){
+  this.getAll = function(req, res){
     var sortedBleets = _
       .chain(bleets)
       .sortBy('postDate')
@@ -16,11 +17,22 @@ function BleetRequestHandler(seedData){
   };
 
   this.post = function(req, res){
+
+    if(!req.body.author){
+      res.status(400).send({error:'Author uri must be provided.'});
+      return;
+    }
+
+    if(!authorUriPattern.test(req.body.author)){
+      res.status(400).send({error:'Author uri must be in the format /users/{id}.'});
+      return;
+    }
+
     bleets[nextId] = {
       id: nextId,
       postDate: req.body.postDate || new Date().toJSON(),
       text: req.body.text,
-      author: '/user/1'
+      author: req.body.author
     };
     nextId++;
 
@@ -28,10 +40,10 @@ function BleetRequestHandler(seedData){
   };
 
   this.patch = function(req, res){
-    var bleet = bleets[req.body.id];
+    var bleet = bleets[req.params.bleet_id];
 
     if(!bleet){
-      res.status(404).end();
+      res.status(404).send({error:'Bleet cannot be found.'});
       return;
     }
 
@@ -40,14 +52,14 @@ function BleetRequestHandler(seedData){
   };
 
   this.delete = function(req, res){
-    var bleet = bleets[req.body.id];
+    var bleet = bleets[req.params.bleet_id];
 
     if(!bleet){
-      res.status(404).end();
+      res.status(404).send({error:'Bleet cannot be found.'});
       return;
     }
 
-    delete bleets[req.body.id];
+    delete bleets[req.params.bleet_id];
     res.status(200).end();
   };
 }

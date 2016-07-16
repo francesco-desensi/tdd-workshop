@@ -24,7 +24,7 @@ var bleets = {
     id: 3,
     postDate: new Date(1466793000000).toJSON(),
     text: 'Worse than high school cafeteria pizza? #inquiringminds #enquiringminds',
-    author: '/user/4'
+    author: '/user/1'
   },
   4: {
     id: 4,
@@ -37,6 +37,12 @@ var bleets = {
     postDate: new Date(1466795000000).toJSON(),
     text: 'Ahem, yes, that style guide is good stuff #checkitout',
     author: '/user/1'
+  },
+  6: {
+    id: 6,
+    postDate: new Date(1466795000000).toJSON(),
+    text: 'Ahem, yes, that style guide is good stuff #checkitout',
+    author: '/user/1'
   }
 };
 
@@ -44,13 +50,13 @@ var prefix = '/api';
 var bleetUri = prefix + '/bleets';
 var requestHandler = new BleetRequestHandler(bleets);
 
-app.get(bleetUri, requestHandler.get);
+app.get(bleetUri, requestHandler.getAll);
 
 app.post(bleetUri, requestHandler.post);
 
 app.patch(bleetUri, requestHandler.patch);
 
-app.delete(bleetUri, requestHandler.delete);
+app.delete(bleetUri + '/:bleet_id', requestHandler.delete);
 
 module.exports = function(port) {
   port = port || 3000;
