@@ -10,6 +10,9 @@
 
     beforeEach(inject(function() {
     }));
-    
+
+    it('should do something', function(){
+      return 0;
+    })
   });
 })();

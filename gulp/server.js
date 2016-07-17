@@ -3,7 +3,8 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
-var serverApp = require('./../src/server/bleet-service/index.js');
+var bleetService = require('./../src/server/bleet-service/index.js');
+var userService = require('./../src/server/user-service/index.js');
 
 var browserSync = require('browser-sync');
 var browserSyncSpa = require('browser-sync-spa');
@@ -28,8 +29,10 @@ function browserSyncInit(baseDir, browser) {
   };
 
   //init the server
-  var serverPort = 3003;
-  var prefix = serverApp(serverPort);
+  var bleetServicePort = 3003;
+  var userServicePort = 3004;
+  var bleetServiceMiddleware = bleetService(bleetServicePort);
+  var userServiceMiddleWare = userService(userServicePort);
 
   /*
    * You can add a proxy to your backend by uncommenting the line below.
@@ -38,7 +41,10 @@ function browserSyncInit(baseDir, browser) {
    *
    * For more details and option, https://github.com/chimurai/http-proxy-middleware/blob/v0.9.0/README.md
    */
-  server.middleware = proxyMiddleware(prefix, {target: 'http://localhost:' + serverPort, changeOrigin: true});
+  server.middleware = [
+    proxyMiddleware(bleetServiceMiddleware, {target: 'http://localhost:' + bleetServicePort, changeOrigin: true}),
+    proxyMiddleware(userServiceMiddleWare, {target: 'http://localhost:' + userServicePort, changeOrigin: true})
+  ];
 
   browserSync.instance = browserSync.init({
     startPath: '/',

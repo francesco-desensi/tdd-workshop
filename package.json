@@ -30,6 +30,7 @@
     "gulp-jshint": "^2.0.1",
     "gulp-less": "~3.0.3",
     "gulp-load-plugins": "~0.10.0",
+    "gulp-mocha": "*",
     "gulp-ng-annotate": "~1.1.0",
     "gulp-protractor": "~2.1.0",
     "gulp-rename": "~1.2.2",

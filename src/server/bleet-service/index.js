@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var express = require('express');
 var bodyParser = require('body-parser');
+var BleetRequestHandler = require('./bleet-request-handler.js');
 var app = express();
 
 app.use(bodyParser.json()); 
@@ -23,7 +24,7 @@ var bleets = {
     id: 3,
     postDate: new Date(1466793000000).toJSON(),
     text: 'Worse than high school cafeteria pizza? #inquiringminds #enquiringminds',
-    author: '/user/4'
+    author: '/user/1'
   },
   4: {
     id: 4,
@@ -36,47 +37,26 @@ var bleets = {
     postDate: new Date(1466795000000).toJSON(),
     text: 'Ahem, yes, that style guide is good stuff #checkitout',
     author: '/user/1'
+  },
+  6: {
+    id: 6,
+    postDate: new Date(1466795000000).toJSON(),
+    text: 'Ahem, yes, that style guide is good stuff #checkitout',
+    author: '/user/1'
   }
 };
 
-var nextId = 6;
 var prefix = '/api';
 var bleetUri = prefix + '/bleets';
+var requestHandler = new BleetRequestHandler(bleets);
 
-app.get(bleetUri, function (req, res) {
-  var sortedBleets = _
-    .chain(bleets)
-    .sortBy('postDate')
-    .reverse()
-    .value();
+app.get(bleetUri, requestHandler.getAll);
 
-  res.type('json');
-  res.status(200).send(sortedBleets);
-});
+app.post(bleetUri, requestHandler.post);
 
-app.post(bleetUri, function (req, res) {
-  bleets[nextId] = {
-    id: nextId,
-    postDate: req.body.postDate || new Date().toJSON(),
-    text: req.body.text,
-    author: '/user/1'
-  };
-  nextId++;
+app.patch(bleetUri, requestHandler.patch);
 
-  res.status(201).end();
-});
-
-app.patch(bleetUri, function (req, res) {
-  var bleet = bleets[req.body.id];
-  bleet.text = req.body.text;
-
-  res.status(200).end();
-});
-
-app['delete'](bleetUri, function (req, res) {
-  delete bleets[req.body.id];
-  res.status(200).end();
-});
+app.delete(bleetUri + '/:bleet_id', requestHandler.delete);
 
 module.exports = function(port) {
   port = port || 3000;
