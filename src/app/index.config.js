@@ -22,11 +22,24 @@
       .when('/', {
         controller: 'MainController',
         controllerAs: 'vm',
-        templateUrl: 'app/main/main.html'
+        templateUrl: 'app/main/main.html',
+        resolve: {
+          loginStatus: loginStatusChecker
+        }
+      })
+      .when('/login', {
+        controller:'LoginController',
+        controllerAs: 'vm',
+        templateUrl: 'app/main/login.html'
       })
       .otherwise('/');
 
-    console.log('config')
+    loginStatusChecker.$inject = ['users', '$location'];
+    function loginStatusChecker(users, $location) {
+      if(!users.getCurrentUser()) {
+        $location.path('/login');
+      }
+    }
   }
 
 })();

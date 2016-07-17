@@ -2,15 +2,18 @@
   'use strict';
 
   describe('bleets', function () {
-    var bleets;
+    var bleets, users;
     var $http, $httpBackend;
 
     beforeEach(module('tddWorkshop.data'));
 
     beforeEach(inject(function ($injector) {
       bleets = $injector.get('bleets');
+      users = $injector.get('users');
       $http = $injector.get('$http');
       $httpBackend = $injector.get('$httpBackend');
+
+      spyOn(users, 'getCurrentUser').and.returnValue({id: 1});
     }));
 
     afterEach(function () {
@@ -20,7 +23,7 @@
 
     describe('getAllBleets()', function () {
       var bleetsFromServer;
-      beforeEach(function(){
+      beforeEach(function () {
         bleetsFromServer = ['thing1', 'thing2'];
       });
 
@@ -45,7 +48,7 @@
         expect(resolvedValue).toEqual(bleetsFromServer);
       });
 
-      it('rejects with the response object from $http when call fails', function() {
+      it('rejects with the response object from $http when call fails', function () {
         $httpBackend.expectGET('/api/bleets').respond(500, 'internal error');
 
         var promise = bleets.getAllBleets();
@@ -62,15 +65,28 @@
 
     describe('createBleet()', function () {
       it('calls the correct endpoint with the right data', function () {
-        $httpBackend.expectPOST('/api/bleets', {text: 'bleetText'}).respond(201);
+        $httpBackend.expectPOST('/api/bleets', {text: 'bleetText', author: '/api/users/1'}).respond(201);
 
         bleets.createBleet('bleetText');
 
         $httpBackend.flush();
       });
 
+      it('gets current user from users service', function () {
+        $httpBackend.expectPOST('/api/bleets', {text: 'bleetText', author: '/api/users/1'}).respond(201);
+
+        var promise = bleets.createBleet('bleetText');
+        var resolvedValue = null;
+        promise.then(function (data) {
+          resolvedValue = data;
+        });
+
+        $httpBackend.flush();
+        expect(users.getCurrentUser.calls.count()).toBe(1);
+      });
+
       it('returns no data', function () {
-        $httpBackend.expectPOST('/api/bleets', {text: 'bleetText'}).respond(201);
+        $httpBackend.expectPOST('/api/bleets', {text: 'bleetText', author: '/api/users/1'}).respond(201);
 
         var promise = bleets.createBleet('bleetText');
         var resolvedValue = null;
@@ -82,7 +98,7 @@
         expect(resolvedValue).toBeUndefined();
       });
 
-      it('rejects with the response object from $http when call fails', function() {
+      it('rejects with the response object from $http when call fails', function () {
         $httpBackend.expectPOST('/api/bleets').respond(500, 'internal error');
 
         var promise = bleets.createBleet();

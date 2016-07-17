@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -8,6 +8,5 @@
   MainController.$inject = [];
 
   function MainController() {
-    console.log('ctrl')
   }
 })();

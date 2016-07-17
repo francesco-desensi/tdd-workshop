@@ -8,7 +8,8 @@
   function dataConstants() {
     return {
       BASE_URL: '/api',
-      BLEETS: 'bleets'
+      BLEETS: 'bleets',
+      USERS: 'users'
     };
   }
   

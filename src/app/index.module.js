@@ -11,6 +11,7 @@
       'ngAria',
       'ui.bootstrap',
       'toastr',
+      'tddWorkshop.data',
       'tddWorkshop.components'
     ]);
 })();

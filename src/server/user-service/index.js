@@ -11,7 +11,7 @@ var users = {
   1: {
     id: 1,
     username: 'bigmike',
-    fullName: "Big Mike"
+    fullName: 'Big Mike'
   },
   2: {
     id: 2,

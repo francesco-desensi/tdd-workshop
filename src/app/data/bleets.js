@@ -5,9 +5,9 @@
     .module('tddWorkshop.data')
     .factory('bleets', bleets);
 
-  bleets.$inject = ['$http', '$q', 'dataConstants'];
+  bleets.$inject = ['$http', '$q', 'users', 'dataConstants'];
 
-  function bleets($http, $q, dataConstants) {
+  function bleets($http, $q, users, dataConstants) {
     var service = {};
 
     service.getAllBleets = getAllBleets;
@@ -24,11 +24,17 @@
     }
 
     function createBleet(text) {
-      return $http.post(bleetsUri, {text: text}).then(resolveWithData);
+      var author = userToUserUri(users.getCurrentUser());
+      return $http.post(bleetsUri, {text: text, author: author}).then(resolveWithData);
     }
 
     function resolveWithData(response) {
       return $q.when(response.data);
+    }
+
+    function userToUserUri(user) {
+      return [dataConstants.BASE_URL, dataConstants.USERS, user.id].join('/');
+
     }
   }
 
