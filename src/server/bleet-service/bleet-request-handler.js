@@ -1,9 +1,9 @@
 var _ = require('lodash');
 
-function BleetRequestHandler(seedData){
+function BleetRequestHandler(userUriPrefix, seedData){
   var bleets = seedData;
   var nextId = Object.keys(bleets).length+1;
-  var authorUriPattern = /^\/users\/\d+$/;
+  var authorUriPattern = new RegExp('^' + userUriPrefix + '/users/\\d+$');
 
   this.getAll = function(req, res){
     var sortedBleets = _
@@ -24,7 +24,7 @@ function BleetRequestHandler(seedData){
     }
 
     if(!authorUriPattern.test(req.body.author)){
-      res.status(400).send({error:'Author uri must be in the format /users/{id}.'});
+      res.status(400).send({error:'Author uri must be in the format /{api prefix}/users/{id}.'});
       return;
     }
 

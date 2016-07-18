@@ -1,0 +1,8 @@
+<div>
+    <form name="createBleetForm" class="form-inline" novalidate>
+        <div class="form-group">
+            <input id="bleetText" name="bleetText" class="form-control" type="text" ng-model="bleet.text" required />
+            <input class="btn btn-primary" type="button" ng-click="vm.createBleetOnSubmit(bleet, createBleetForm)" ng-disabled="createBleetForm.$invalid" value="Submit" />
+        </div>
+    </form>
+</div>

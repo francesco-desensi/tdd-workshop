@@ -6,14 +6,18 @@
     var bleets;
     var instantiateController;
     var bleetsData;
+    var $rootScope;
+    var scope;
 
     beforeEach(module('tddWorkshop.posts'));
 
-    beforeEach(inject(function ($injector) {
+    beforeEach(inject(function ($injector, _$rootScope_) {
       bleets = $injector.get('bleets');
+      $rootScope = _$rootScope_;
+      scope = $rootScope.$new();
 
       instantiateController = function compileDirective() {
-        vm = $injector.get('$componentController')('feed');
+        vm = $injector.get('$componentController')('feed', {$scope: scope});
       };
     }));
 
@@ -60,9 +64,9 @@
 
     describe('on compilation', function () {
       var $q;
+
       beforeEach(inject(function (_$q_) {
         $q = _$q_;
-
         spyOn(bleets, 'getAllBleets').and.returnValue($q.when());
       }));
 
@@ -72,8 +76,13 @@
         expect(vm.hasError).toBe(false);
       });
 
+      it('listens for new post events', function(){
+        spyOn(scope, '$on')
+        instantiateController();
+        expect(scope.$on).toHaveBeenCalledWith('newBleetPosted', vm.updateFeed);
+      });
+
       describe('tries to retrieve bleets', function () {
-        var $rootScope;
         beforeEach(inject(function (_$rootScope_) {
           $rootScope = _$rootScope_;
         }));
@@ -119,6 +128,5 @@
         });
       });
     });
-
   });
 })();

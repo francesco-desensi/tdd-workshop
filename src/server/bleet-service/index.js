@@ -48,7 +48,7 @@ var bleets = {
 
 var prefix = '/api';
 var bleetUri = prefix + '/bleets';
-var requestHandler = new BleetRequestHandler(bleets);
+var requestHandler = new BleetRequestHandler(prefix, bleets);
 
 app.get(bleetUri, requestHandler.getAll);
 
