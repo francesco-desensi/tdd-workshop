@@ -34,7 +34,6 @@
 
     function userToUserUri(user) {
       return [dataConstants.BASE_URL, dataConstants.USERS, user.id].join('/');
-
     }
   }
 
