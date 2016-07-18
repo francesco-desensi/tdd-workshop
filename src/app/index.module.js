@@ -12,6 +12,7 @@
       'ui.bootstrap',
       'toastr',
       'tddWorkshop.data',
+      'tddWorkshop.posts',
       'tddWorkshop.components'
     ]);
 })();

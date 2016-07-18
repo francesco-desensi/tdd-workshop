@@ -11,8 +11,7 @@
     var directive = {
       controller: NavbarController,
       controllerAs: 'vm',
-      templateUrl: 'app/components/navbar.directive.html',
-      scope: {}
+      templateUrl: 'app/components/navbar.directive.html'
     };
     return directive;
   }
