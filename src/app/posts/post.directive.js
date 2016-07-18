@@ -3,13 +3,13 @@
 
   angular
     .module('tddWorkshop.posts')
-    .component('poster', poster());
+    .component('post', poster());
 
   function poster() {
     var directive = {
       controller: PosterController,
       controllerAs: 'vm',
-      templateUrl: '/app/posts/poster.html'
+      templateUrl: '/app/posts/post.html'
     };
     return directive;
   }
