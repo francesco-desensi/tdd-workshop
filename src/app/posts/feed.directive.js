@@ -14,20 +14,23 @@
     return directive;
   }
 
-  FeedController.$inject = ['bleets'];
+  FeedController.$inject = ['bleets', '$scope'];
 
-  function FeedController(bleets) {
+  function FeedController(bleets, $scope) {
     var vm = this;
 
     vm.bleets = null; //list of bleets
     vm.hasError = false; //error status
 
+    vm.updateFeed = function(){
+      bleets.getAllBleets().then(bindBleets, setError);
+    };
+
     activate();
 
-    ///////////
-
     function activate() {
-      bleets.getAllBleets().then(bindBleets, setError);
+      vm.updateFeed();
+      $scope.$on('newBleetPosted', vm.updateFeed);
     }
 
     function bindBleets(bleets) {

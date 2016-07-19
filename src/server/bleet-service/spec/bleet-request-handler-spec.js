@@ -24,7 +24,7 @@ describe('Bleet service request handler', function(){
 
     req = res = {};
     res.type = sinon.stub();
-    requestHandler = new BleetRequestHandler(bleets);
+    requestHandler = new BleetRequestHandler('/api', bleets);
 
     statusSpy = res.status = sinon.spy(function(){
       return {
@@ -62,7 +62,7 @@ describe('Bleet service request handler', function(){
       req.body = {
         postDate: new Date().toJSON(),
         text: "This is a test",
-        author: '/users/1'
+        author: '/api/users/1'
       };
     });
 
