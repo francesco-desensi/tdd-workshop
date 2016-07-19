@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('bleets', function () {
+  fdescribe('bleets', function () {
     var bleets, users;
     var $http, $httpBackend;
 
