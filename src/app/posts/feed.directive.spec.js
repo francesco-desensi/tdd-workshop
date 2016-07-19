@@ -76,6 +76,12 @@
         expect(vm.hasError).toBe(false);
       });
 
+      it('listens for bleet deletion', function(){
+        spyOn(scope, '$on');
+        instantiateController();
+        expect(scope.$on).toHaveBeenCalledWith('bleetDeleted', vm.updateFeed);
+      });
+
       it('listens for new post events', function(){
         spyOn(scope, '$on');
         instantiateController();

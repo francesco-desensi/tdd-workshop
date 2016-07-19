@@ -6,12 +6,14 @@
     var users, bleets;
     var editBleetForm;
     var expectedUser;
+    var $q;
 
     beforeEach(module('tddWorkshop.posts'));
 
     beforeEach(inject(function ($injector) {
       users = $injector.get('users');
       bleets = $injector.get('bleets');
+      $q = $injector.get('$q');
 
       expectedUser = {
         id: 0,
@@ -20,7 +22,8 @@
         avatarUrl: '/path/to/avatar'
       };
 
-      spyOn(users, 'getUser').and.returnValue($injector.get('$q').when(expectedUser));
+      spyOn(users, 'getUser').and.returnValue($q.when(expectedUser));
+      spyOn(bleets, 'deleteBleet').and.returnValue($q.when());
 
       editBleetForm = jasmine.createSpyObj('editBleetForm', ['$setPristine', '$setUntouched']);
 
@@ -131,7 +134,23 @@
             expect(vm.editMode).toBe(false);
           }));
         });
+      });
 
+      describe('delete() is called', function(){
+        it('calls the deleteBleet function', function(){
+          vm.delete();
+
+          expect(bleets.deleteBleet).toHaveBeenCalledWith(1);
+        });
+
+        it('publishes event on successful deletion', inject(function($rootScope){
+          spyOn($rootScope, '$broadcast');
+
+          vm.delete();
+          $rootScope.$apply();
+
+          expect($rootScope.$broadcast).toHaveBeenCalledWith('bleetDeleted');
+        }));
       });
     });
   });

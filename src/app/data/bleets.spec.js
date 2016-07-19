@@ -121,5 +121,15 @@
         $httpBackend.flush();
       });
     });
+
+    describe('deleteBleet()', function () {
+      it('makes a DELETE request for the specified bleet', function () {
+        $httpBackend.expect('DELETE', '/api/bleets/0').respond(200);
+
+        bleets.deleteBleet(0);
+
+        $httpBackend.flush();
+      });
+    });
   });
 })();

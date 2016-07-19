@@ -13,6 +13,7 @@
     service.getAllBleets = getAllBleets;
     service.createBleet = createBleet;
     service.updateBleet = updateBleet;
+    service.deleteBleet = deleteBleet;
 
     var bleetsUri = [dataConstants.BASE_URL, dataConstants.BLEETS].join('/');
 
@@ -39,6 +40,10 @@
 
     function updateBleet(id, text) {
       return $http.patch([bleetsUri, id].join('/'), {text: text});
+    }
+
+    function deleteBleet(id){
+      return $http.delete([bleetsUri, id].join('/'));
     }
   }
 
