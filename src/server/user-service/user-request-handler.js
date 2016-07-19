@@ -5,6 +5,11 @@ function UserRequestHandler(seedData) {
   var nextId = Object.keys(users).length + 1;
 
   this.getAll = function (req, res) {
+
+    if(req.query && req.query.username) {
+      return this.search(req, res);
+    }
+
     var sortedUsers = _
       .chain(users)
       .sortBy('name')
@@ -27,8 +32,6 @@ function UserRequestHandler(seedData) {
   };
 
   this.search = function (req, res) {
-    console.log('search for ' + req.query.username);
-
     var user = _.find(users, _.matchesProperty('username', req.query.username));
 
     res.type('json');

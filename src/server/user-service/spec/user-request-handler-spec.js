@@ -57,6 +57,23 @@ describe('User service request handler', function () {
     });
   });
 
+  describe('When getAll is called with a query string of username', function() {
+    beforeEach(function () {
+      req.query = {
+        username: 'test'
+      };
+    });
+
+    it('should call search method', function () {
+      var searchSpy = requestHandler.search = sinon.spy();
+
+      requestHandler.getAll(req, res);
+
+      sinon.assert.calledWith(searchSpy, req, res);
+    });
+
+  });
+
   describe('When get is called', function () {
 
     beforeEach(function () {

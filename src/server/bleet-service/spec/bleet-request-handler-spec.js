@@ -19,13 +19,13 @@ describe('Bleet service request handler', function () {
         id: 1,
         postDate: new Date(1466791000000).toJSON(),
         text: 'Have you guys seen the John Papa Style Guide?! #socool',
-        author: '/user/2'
+        author: '/api/user/2'
       }
     };
 
     req = res = {};
     res.type = sinon.stub();
-    requestHandler = new BleetRequestHandler(bleets);
+    requestHandler = new BleetRequestHandler('/api', bleets);
 
     statusSpy = res.status = sinon.spy(function () {
       return {
