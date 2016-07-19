@@ -22,12 +22,8 @@
   function PostController(users, bleets) {
     var vm = this;
 
-    vm.editMode = false;
     vm.author = {};
-    vm.edit = edit;
-    vm.cancelEdit = cancelEdit;
     vm.delete = deletePost;
-    vm.saveBleet = saveBleet;
 
     activate();
 
@@ -44,30 +40,8 @@
       return user;
     }
 
-    function edit() {
-      vm.editMode = true;
-    }
-
-    function cancelEdit() {
-      vm.editBleetForm.$setPristine();
-      vm.editBleetForm.$setUntouched();
-
-      turnOffEditMode();
-    }
-
     function deletePost() {
 
-    }
-
-    function saveBleet() {
-      vm.post.text = vm.editBleetForm.text.value;
-
-      bleets.updateBleet(vm.post.id, vm.post.text)
-        .then(turnOffEditMode);
-    }
-
-    function turnOffEditMode() {
-      vm.editMode = false;
     }
 
   }
