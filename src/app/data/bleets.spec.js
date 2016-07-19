@@ -112,5 +112,14 @@
         expect(reason.data).toBe('internal error');
       });
     });
+
+    describe('updateBleet()', function () {
+      it('makes a PATCH request for the bleet that was edited', function () {
+        $httpBackend.expect('PATCH', '/api/bleets/0', {text: 'new bleet text'}).respond(200);
+
+        bleets.updateBleet(0, 'new bleet text');
+        $httpBackend.flush();
+      });
+    });
   });
 })();

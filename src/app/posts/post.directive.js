@@ -7,7 +7,7 @@
 
   function poster() {
     var directive = {
-      controller: PosterController,
+      controller: PostController,
       controllerAs: 'vm',
       templateUrl: '/app/posts/post.html',
       bindings: {
@@ -17,15 +17,17 @@
     return directive;
   }
 
-  PosterController.$inject = ['users'];
+  PostController.$inject = ['users', 'bleets'];
 
-  function PosterController(users) {
+  function PostController(users, bleets) {
     var vm = this;
 
     vm.editMode = false;
     vm.author = {};
     vm.edit = edit;
+    vm.cancelEdit = cancelEdit;
     vm.delete = deletePost;
+    vm.saveBleet = saveBleet;
 
     activate();
 
@@ -46,9 +48,28 @@
       vm.editMode = true;
     }
 
+    function cancelEdit() {
+      vm.editBleetForm.$setPristine();
+      vm.editBleetForm.$setUntouched();
+
+      turnOffEditMode();
+    }
+
     function deletePost() {
 
     }
+
+    function saveBleet() {
+      vm.post.text = vm.editBleetForm.text.value;
+
+      bleets.updateBleet(vm.post.id, vm.post.text)
+        .then(turnOffEditMode);
+    }
+
+    function turnOffEditMode() {
+      vm.editMode = false;
+    }
+
   }
 
 })();

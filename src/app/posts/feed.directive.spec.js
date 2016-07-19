@@ -77,7 +77,7 @@
       });
 
       it('listens for new post events', function(){
-        spyOn(scope, '$on')
+        spyOn(scope, '$on');
         instantiateController();
         expect(scope.$on).toHaveBeenCalledWith('newBleetPosted', vm.updateFeed);
       });

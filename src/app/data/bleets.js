@@ -12,6 +12,7 @@
 
     service.getAllBleets = getAllBleets;
     service.createBleet = createBleet;
+    service.updateBleet = updateBleet;
 
     var bleetsUri = [dataConstants.BASE_URL, dataConstants.BLEETS].join('/');
 
@@ -25,7 +26,7 @@
 
     function createBleet(text) {
       var author = userToUserUri(users.getCurrentUser());
-      return $http.post(bleetsUri, {text: text, author: author}).then(resolveWithData);
+      return $http.post(bleetsUri, {text: text, author: author}).then(angular.noop);
     }
 
     function resolveWithData(response) {
@@ -34,6 +35,10 @@
 
     function userToUserUri(user) {
       return [dataConstants.BASE_URL, dataConstants.USERS, user.id].join('/');
+    }
+
+    function updateBleet(id, text) {
+      return $http.patch([bleetsUri, id].join('/'), {text: text});
     }
   }
 
