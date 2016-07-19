@@ -24,11 +24,7 @@
         $setUntouched: function(){}
       };
 
-      instantiateController = function compileDirective() {
-        vm = $injector.get('$componentController')('poster', {$scope: scope});
-      };
-
-      instantiateController();
+      vm = $injector.get('$componentController')('poster', {$scope: scope});
     }));
 
     describe('createBleetOnSubmit', function(){
