@@ -6,14 +6,12 @@
     var users, bleets;
     var editBleetForm;
     var expectedUser;
-    var $q;
 
     beforeEach(module('tddWorkshop.posts'));
 
     beforeEach(inject(function ($injector) {
       users = $injector.get('users');
       bleets = $injector.get('bleets');
-      $q = $injector.get('$q');
 
       expectedUser = {
         id: 0,
@@ -22,6 +20,7 @@
         avatarUrl: '/path/to/avatar'
       };
 
+      var $q = $injector.get('$q');
       spyOn(users, 'getUser').and.returnValue($q.when(expectedUser));
       spyOn(bleets, 'deleteBleet').and.returnValue($q.when());
 
@@ -39,11 +38,6 @@
     }));
 
     describe('when component is instantiated', function () {
-      describe('editMode', function () {
-        it('defaults to false', function () {
-          expect(vm.editMode).toBe(false);
-        });
-      });
 
       describe('author', function () {
 
@@ -73,68 +67,6 @@
     });
 
     describe('when method', function () {
-      describe('edit() is called', function () {
-        it('sets editMode to true', function () {
-          vm.edit();
-
-          expect(vm.editMode).toBe(true);
-        });
-      });
-
-      describe('cancelEdit() is called', function () {
-        beforeEach(function () {
-          vm.editMode = true;
-        });
-
-        it('calls $setPristine() on the form controller', function () {
-          vm.cancelEdit();
-
-          expect(editBleetForm.$setPristine.calls.count()).toBe(1);
-        });
-
-        it('calls $setUntouched() on the form controller', function () {
-          vm.cancelEdit();
-
-          expect(editBleetForm.$setUntouched.calls.count()).toBe(1);
-        });
-
-        it('turns off edit mode', function () {
-          vm.cancelEdit();
-
-          expect(vm.editMode).toBe(false);
-        });
-      });
-
-      describe('saveBleet() is called', function () {
-        beforeEach(inject(function ($q) {
-          spyOn(bleets, 'updateBleet').and.returnValue($q.when());
-          vm.editMode = true;
-          vm.editBleetForm.text = {value: 'new bleet'};
-        }));
-
-        it('sets post text to the new text', function () {
-          vm.saveBleet();
-
-          expect(vm.post.text).toBe('new bleet');
-
-        });
-
-        it('calls the updateBleet() method of the bleets service', function () {
-          vm.saveBleet();
-
-          expect(bleets.updateBleet.calls.count()).toBe(1);
-          expect(bleets.updateBleet.calls.argsFor(0)).toEqual([1, 'new bleet']);
-        });
-
-        describe('and the call is successful', function () {
-          it('turns off editMode', inject(function ($rootScope) {
-            vm.saveBleet();
-            $rootScope.$apply();
-
-            expect(vm.editMode).toBe(false);
-          }));
-        });
-      });
 
       describe('delete() is called', function(){
         it('calls the deleteBleet function', function(){

@@ -2,23 +2,12 @@
   <div class="col-sm-2 text-center avatar">
     <img ng-src="{{vm.author.avatarUrl}}" alt="{{vm.author.name}}">
   </div>
-  <div class="col-sm-9" ng-hide="vm.editMode">{{vm.post.text}}</div>
-  <div class="col-sm-9" ng-show="vm.editMode">
-    <form class="form-horizontal" name="vm.editBleetForm" ng-submit="vm.saveBleet()">
-      <div class="form-group">
-        <textarea class="form-control" ng-model="vm.editBleetForm.text.value" rows="3" name="text">{{::vm.post.text}}</textarea>
-      </div>
-      <div class="form-group text-right">
-        <button type="submit" ng-disabled="vm.editBleetForm.text.$pristine" class="btn btn-default">Save</button>
-        <button type="reset" ng-click="vm.cancelEdit()" class="btn btn-default">Cancel</button>
-      </div>
-    </form>
-  </div>
+  <div class="col-sm-9">{{vm.post.text}}</div>
   <div class="col-sm-1">
     <div class="btn-group col-sm-12 text-center" uib-dropdown is-open="status.isopen">
       <span uib-dropdown-toggle class="caret"></span>
       <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-        <li role="menuitem" ng-click="vm.edit()">Edit</li>
+        <li role="menuitem">Edit</li>
         <li role="menuitem" ng-click="vm.delete()">Delete</li>
       </ul>
     </div>
