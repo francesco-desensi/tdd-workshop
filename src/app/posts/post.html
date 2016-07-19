@@ -1,5 +1,21 @@
 <div class="col-sm-12">
-  <div class="col-sm-2">user data</div>
-  <div class="col-sm-9">Text</div>
-  <div class="col-sm-1">post options</div>
+  <div class="col-sm-2">{{vm.authorName}}</div>
+  <div class="col-sm-9" ng-if="!vm.editMode">{{vm.post.text}}</div>
+  <div class="col-sm-9" ng-if="vm.editMode">
+    <form class="form-inline">
+      <div class="form-group">
+        <textarea class="form-control" rows="3"></textarea>
+      </div>
+      <button type="submit" class="btn btn-default">Save</button>
+    </form>
+  </div>
+  <div class="col-sm-1">
+    <div class="btn-group col-sm-12 text-center" uib-dropdown is-open="status.isopen">
+      <span uib-dropdown-toggle class="caret"></span>
+      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+        <li role="menuitem">Edit</li>
+        <li role="menuitem">Delete</li>
+      </ul>
+    </div>
+  </div>
 </div>

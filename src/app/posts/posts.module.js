@@ -3,7 +3,8 @@
 
   angular
     .module('tddWorkshop.posts', [
-      'tddWorkshop.data'
+      'tddWorkshop.data',
+      'ui.bootstrap.dropdown'
     ]);
 
 })();
