@@ -37,8 +37,6 @@ app.get(usersUri, requestHandler.getAll);
 
 app.get(instanceUri, requestHandler.get);
 
-app.get(usersUri, requestHandler.search);
-
 app.post(usersUri, requestHandler.post);
 
 app.patch(instanceUri, requestHandler.patch);

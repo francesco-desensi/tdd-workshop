@@ -64,14 +64,6 @@ describe('User service request handler', function () {
       };
     });
 
-    it('should call search method', function () {
-      var searchSpy = requestHandler.search = sinon.spy();
-
-      requestHandler.getAll(req, res);
-
-      sinon.assert.calledWith(searchSpy, req, res);
-    });
-
   });
 
   describe('When get is called', function () {
@@ -209,7 +201,7 @@ describe('User service request handler', function () {
     });
 
     it('should respond with a 200 code', function () {
-      requestHandler.search(req, res);
+      requestHandler.getAll(req, res);
 
       expect(statusSpy.calledWith(200)).to.be.true;
     });
@@ -221,7 +213,7 @@ describe('User service request handler', function () {
         send: sendSpy
       });
 
-      requestHandler.search(req, res);
+      requestHandler.getAll(req, res);
 
       expect(sendSpy.calledWith(users['1'])).to.be.true;
     });
@@ -236,7 +228,7 @@ describe('User service request handler', function () {
     });
 
     it('should respond with a 404 code', function () {
-      requestHandler.search(req, res);
+      requestHandler.getAll(req, res);
 
       expect(statusSpy.calledWith(404)).to.be.true;
     });

@@ -7,7 +7,7 @@ function UserRequestHandler(seedData) {
   this.getAll = function (req, res) {
 
     if(req.query && req.query.username) {
-      return this.search(req, res);
+      return search(req, res);
     }
 
     var sortedUsers = _
@@ -31,7 +31,7 @@ function UserRequestHandler(seedData) {
     res.status(200).send(user);
   };
 
-  this.search = function (req, res) {
+  function search (req, res) {
     var user = _.find(users, _.matchesProperty('username', req.query.username));
 
     res.type('json');
@@ -41,7 +41,7 @@ function UserRequestHandler(seedData) {
     } else {
       res.status(404).end();
     }
-  };
+  }
 
   this.post = function (req, res) {
     if (!req.body.username) {
