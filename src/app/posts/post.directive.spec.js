@@ -20,7 +20,9 @@
         avatarUrl: '/path/to/avatar'
       };
 
-      spyOn(users, 'getUser').and.returnValue($injector.get('$q').when(expectedUser));
+      var $q = $injector.get('$q');
+      spyOn(users, 'getUser').and.returnValue($q.when(expectedUser));
+      spyOn(bleets, 'deleteBleet').and.returnValue($q.when());
 
       editBleetForm = jasmine.createSpyObj('editBleetForm', ['$setPristine', '$setUntouched']);
 
