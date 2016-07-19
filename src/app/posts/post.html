@@ -1,5 +1,7 @@
 <div class="col-sm-12">
-  <div class="col-sm-2">{{vm.authorName}}</div>
+  <div class="col-sm-2 text-center avatar">
+    <img ng-src="{{vm.author.avatarUrl}}" alt="{{vm.author.name}}">
+  </div>
   <div class="col-sm-9" ng-if="!vm.editMode">{{vm.post.text}}</div>
   <div class="col-sm-9" ng-if="vm.editMode">
     <form class="form-inline">

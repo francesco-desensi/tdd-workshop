@@ -48,18 +48,19 @@ var bleets = {
 
 var prefix = '/api';
 var bleetUri = prefix + '/bleets';
+var instanceUrl = bleetUri + '/:bleetId';
 var requestHandler = new BleetRequestHandler(prefix, bleets);
 
 app.get(bleetUri, requestHandler.getAll);
 
 app.post(bleetUri, requestHandler.post);
 
-app.patch(bleetUri, requestHandler.patch);
+app.patch(instanceUrl, requestHandler.patch);
 
-app.delete(bleetUri + '/:bleet_id', requestHandler.delete);
+app.delete(instanceUrl, requestHandler.delete);
 
 module.exports = function(port) {
-  port = port || 3000;
+  port = port || 3003;
   app.listen(port, function() {
     console.log('Express server initialized on port ' + port + '!');
   });

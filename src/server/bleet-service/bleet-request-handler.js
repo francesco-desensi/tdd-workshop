@@ -40,7 +40,7 @@ function BleetRequestHandler(userUriPrefix, seedData){
   };
 
   this.patch = function(req, res){
-    var bleet = bleets[req.params.bleet_id];
+    var bleet = bleets[req.params.bleetId];
 
     if(!bleet){
       res.status(404).send({error:'Bleet cannot be found.'});
@@ -52,14 +52,14 @@ function BleetRequestHandler(userUriPrefix, seedData){
   };
 
   this.delete = function(req, res){
-    var bleet = bleets[req.params.bleet_id];
+    var bleet = bleets[req.params.bleetId];
 
     if(!bleet){
       res.status(404).send({error:'Bleet cannot be found.'});
       return;
     }
 
-    delete bleets[req.params.bleet_id];
+    delete bleets[req.params.bleetId];
     res.status(200).end();
   };
 }

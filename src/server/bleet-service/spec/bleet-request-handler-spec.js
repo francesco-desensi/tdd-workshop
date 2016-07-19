@@ -1,3 +1,4 @@
+/*jshint -W030 */
 var chai = require('chai');
 var sinon = require('sinon');
 chai.config.includeStack = true;
@@ -24,7 +25,7 @@ describe('Bleet service request handler', function(){
 
     req = res = {};
     res.type = sinon.stub();
-    requestHandler = new BleetRequestHandler('/api', bleets);
+    requestHandler = new BleetRequestHandler(bleets);
 
     statusSpy = res.status = sinon.spy(function(){
       return {
@@ -52,7 +53,7 @@ describe('Bleet service request handler', function(){
       requestHandler.getAll(req, res);
 
       sinon.assert.calledWith(sendSpy, sinon.match(function(value){
-        return Object.keys(value).length == 1;
+        return Object.keys(value).length === 1;
       }));
     });
   });
@@ -61,7 +62,7 @@ describe('Bleet service request handler', function(){
     beforeEach(function(){
       req.body = {
         postDate: new Date().toJSON(),
-        text: "This is a test",
+        text: 'This is a test',
         author: '/api/users/1'
       };
     });
@@ -97,11 +98,11 @@ describe('Bleet service request handler', function(){
     beforeEach(function(){
       req.body = {
         id: 1,
-        text: "This is the new text"
+        text: 'This is the new text'
       };
 
       req.params = {
-        bleet_id: 1
+        bleetId: 1
       };
     });
 
@@ -112,7 +113,7 @@ describe('Bleet service request handler', function(){
     });
 
     it('should respond with a 404 code when the request bleet cannot be found', function(){
-      req.params.bleet_id = 49;
+      req.params.bleetId = 49;
       requestHandler.patch(req, res);
 
       expect(statusSpy.calledWith(404)).to.be.true;
@@ -121,7 +122,7 @@ describe('Bleet service request handler', function(){
     it('should change the value', function(){
       requestHandler.patch(req, res);
 
-      expect(bleets['1'].text).to.be.equal("This is the new text")
+      expect(bleets['1'].text).to.be.equal('This is the new text');
     });
   });
 
@@ -132,7 +133,7 @@ describe('Bleet service request handler', function(){
       };
 
       req.params = {
-        bleet_id: 1
+        bleetId: 1
       };
     });
 
@@ -143,7 +144,7 @@ describe('Bleet service request handler', function(){
     });
 
     it('should respond with a 404 code when the request bleet cannot be found', function(){
-      req.params.bleet_id = 49;
+      req.params.bleetId = 49;
       requestHandler.delete(req, res);
 
       expect(statusSpy.calledWith(404)).to.be.true;

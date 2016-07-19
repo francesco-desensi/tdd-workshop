@@ -28,25 +28,56 @@
 
     describe('when method', function () {
       describe('login() is called', function () {
-        it('always resolves with a user object and status 200', function () {
-          var user = null;
-          var status = null;
-          users.login().then(function (response) {
-            status = response.status;
-            user = response.data;
+        describe('when successful', function () {
+          beforeEach(function () {
+            $httpBackend.expect('GET', '/api/users?username=bigmike').respond(201, expectedUser);
           });
-          $rootScope.$apply();
 
-          expect(status).toBe(200);
-          expect(user).toEqual(expectedUser);
+          it('performs a GET request to the users service and returns the user object', function () {
+            var user = null;
+
+            users.login(expectedUser.username).then(function (data) {
+              user = data;
+            });
+            $httpBackend.flush();
+
+            expect(user).toEqual(expectedUser);
+          });
+
+          it('sets the current user to the user that is retrieved', function () {
+            spyOn(users, 'setCurrentUser');
+
+            users.login(expectedUser.username);
+            $httpBackend.flush();
+
+            expect(users.setCurrentUser.calls.count()).toBe(1);
+            expect(users.setCurrentUser.calls.argsFor(0)).toEqual([expectedUser]);
+          });
         });
 
-        it('sets the current user to the user that is retrieved', function () {
-          spyOn(users, 'setCurrentUser');
+        describe('when failed', function () {
+          beforeEach(function () {
+            $httpBackend.expect('GET', '/api/users?username=bigmike').respond(404, 'not found');
+          });
 
-          users.login();
+          it('forwards the rejection', function () {
+            var rejected = false;
+            users.login(expectedUser.username).catch(function () {
+              rejected = true;
+            });
+            $httpBackend.flush();
 
-          expect(users.setCurrentUser).toHaveBeenCalledWith(expectedUser);
+            expect(rejected).toBe(true);
+          });
+
+          it('does not set the current user to anything', function () {
+            spyOn(users, 'setCurrentUser');
+
+            users.login(expectedUser.username);
+            $httpBackend.flush();
+
+            expect(users.setCurrentUser.calls.count()).toBe(0);
+          });
         });
       });
 
@@ -87,7 +118,7 @@
           $httpBackend.expect('GET', link).respond(200, expectedUser);
 
           var user = null;
-          users.getUser(link).then(function(data){
+          users.getUser(link).then(function (data) {
             user = data;
           });
           $httpBackend.flush();

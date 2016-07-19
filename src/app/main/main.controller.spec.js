@@ -13,6 +13,6 @@
 
     it('should do something', function(){
       return 0;
-    })
+    });
   });
 })();

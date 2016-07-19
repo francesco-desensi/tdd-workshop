@@ -23,7 +23,7 @@
     var vm = this;
 
     vm.editMode = false;
-    vm.authorName = null;
+    vm.author = {};
     vm.edit = edit;
     vm.delete = deletePost;
 
@@ -33,11 +33,13 @@
 
     function activate() {
       users.getUser(vm.post.author)
-        .then(setAuthorFromUser);
+        .then(setAuthorDataFromUser);
     }
 
-    function setAuthorFromUser(user) {
-      vm.authorName = user.fullName;
+    function setAuthorDataFromUser(user) {
+      vm.author.name = user.fullName;
+      vm.author.avatarUrl = user.avatarUrl;
+      return user;
     }
 
     function edit() {

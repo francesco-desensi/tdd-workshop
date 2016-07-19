@@ -14,7 +14,8 @@
       expectedUser = {
         id: 0,
         username: 'bigmike',
-        fullName: 'Big Mike'
+        fullName: 'Big Mike',
+        avatarUrl: '/path/to/avatar'
       };
 
       spyOn(users, 'getUser').and.returnValue($injector.get('$q').when(expectedUser));
@@ -38,8 +39,8 @@
 
       describe('author', function () {
 
-        it('defaults to null', function() {
-          expect(vm.authorName).toBeNull();
+        it('initializes author to an empty object', function() {
+          expect(vm.author).toEqual({});
         });
 
         it('is fetched from the users service', inject(function ($rootScope) {
@@ -49,10 +50,16 @@
           expect(users.getUser.calls.argsFor(0)).toEqual(['/api/users/0']);
         }));
 
-        it('sets authorName to the value of the resolved fullName', inject(function($rootScope) {
+        it('sets author name to the value of the resolved fullName', inject(function($rootScope) {
           $rootScope.$apply();
 
-          expect(vm.authorName).toBe(expectedUser.fullName);
+          expect(vm.author.name).toBe(expectedUser.fullName);
+        }));
+
+        it('sets author avatar to the value returned from the users service', inject(function($rootScope) {
+          $rootScope.$apply();
+
+          expect(vm.author.avatarUrl).toBe(expectedUser.avatarUrl);
         }));
       });
     });

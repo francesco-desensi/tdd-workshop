@@ -5,8 +5,13 @@
     .module('tddWorkshop.data')
     .factory('users', users);
 
+<<<<<<< Updated upstream
+  users.$inject = ['$q', '$http'];
+  function users($q, $http) {
+=======
   users.$inject = ['$q', '$http', 'dataConstants'];
   function users($q, $http, dataConstants) {
+>>>>>>> Stashed changes
     var service = {};
 
     service.getCurrentUser = getCurrentUser;
@@ -44,6 +49,9 @@
         .then(setAndReturnCurrentUser);
     }
 
+    function resolveWithData(response) {
+      return $q.when(response.data);
+    }
 
     function setAndReturnCurrentUser(user) {
       service.setCurrentUser(user);
