@@ -112,5 +112,30 @@
         expect(reason.data).toBe('internal error');
       });
     });
+
+    describe('deleteBleet()', function(){
+      it('calls the correct endpoint with the right data', function () {
+        $httpBackend.expectDELETE('/api/bleets/1').respond(201);
+
+        bleets.deleteBleet(1);
+
+        $httpBackend.flush();
+      });
+
+      it('rejects with the response object from $http when call fails', function () {
+        $httpBackend.expectDELETE('/api/bleets/1').respond(500, 'internal error');
+
+        var promise = bleets.deleteBleet(1);
+        var reason = null;
+        promise.catch(function (data) {
+          reason = data;
+        });
+
+        $httpBackend.flush();
+
+        expect(reason.status).toBe(500);
+        expect(reason.data).toBe('internal error');
+      });
+    });
   });
 })();

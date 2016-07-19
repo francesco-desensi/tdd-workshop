@@ -4,12 +4,16 @@
   describe('<post>', function () {
     var vm;
     var users;
+    var bleets;
     var expectedUser;
+    var $q;
 
     beforeEach(module('tddWorkshop.posts'));
 
     beforeEach(inject(function ($injector) {
       users = $injector.get('users');
+      bleets = $injector.get('bleets');
+      $q = $injector.get('$q');
 
       expectedUser = {
         id: 0,
@@ -17,7 +21,8 @@
         fullName: 'Big Mike'
       };
 
-      spyOn(users, 'getUser').and.returnValue($injector.get('$q').when(expectedUser));
+      spyOn(users, 'getUser').and.returnValue($q.when(expectedUser));
+      spyOn(bleets, 'deleteBleet').and.returnValue($q.when());
 
       vm = $injector.get('$componentController')('post', null, {
         post: {
@@ -63,6 +68,31 @@
           vm.edit();
 
           expect(vm.editMode).toBe(true);
+        });
+      });
+    });
+
+    describe('when method', function(){
+      describe('deletePost() is called', function(){
+        var $rootScope;
+
+        beforeEach(inject(function(_$rootScope_){
+          $rootScope = _$rootScope_;
+        }));
+
+        it('calls the bleet service delete function', function(){
+          vm.delete();
+
+          expect(bleets.deleteBleet).toHaveBeenCalledWith(1);
+        });
+
+        it('notifies that the deletion occurred', function(){
+          spyOn($rootScope, '$broadcast');
+
+          vm.delete();
+          $rootScope.$apply();
+
+          expect($rootScope.$broadcast).toHaveBeenCalledWith('bleetDeleted');
         });
       });
     });

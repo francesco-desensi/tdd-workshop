@@ -12,12 +12,11 @@
 
     service.getAllBleets = getAllBleets;
     service.createBleet = createBleet;
+    service.deleteBleet = deleteBleet;
 
     var bleetsUri = [dataConstants.BASE_URL, dataConstants.BLEETS].join('/');
 
     return service;
-
-    ////////////////
 
     function getAllBleets() {
       return $http.get(bleetsUri).then(resolveWithData);
@@ -26,6 +25,10 @@
     function createBleet(text) {
       var author = userToUserUri(users.getCurrentUser());
       return $http.post(bleetsUri, {text: text, author: author}).then(resolveWithData);
+    }
+
+    function deleteBleet(id){
+      return $http.delete(bleetsUri + '/' + id).then(resolveWithData);
     }
 
     function resolveWithData(response) {

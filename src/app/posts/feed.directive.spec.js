@@ -82,6 +82,12 @@
         expect(scope.$on).toHaveBeenCalledWith('newBleetPosted', vm.updateFeed);
       });
 
+      it('listens for delete events', function(){
+        spyOn(scope, '$on')
+        instantiateController();
+        expect(scope.$on).toHaveBeenCalledWith('bleetDeleted', vm.updateFeed);
+      });
+
       describe('tries to retrieve bleets', function () {
         beforeEach(inject(function (_$rootScope_) {
           $rootScope = _$rootScope_;

@@ -17,9 +17,9 @@
     return directive;
   }
 
-  PosterController.$inject = ['users'];
+  PosterController.$inject = ['users', 'bleets', '$rootScope'];
 
-  function PosterController(users) {
+  function PosterController(users, bleets, $rootScope) {
     var vm = this;
 
     vm.editMode = false;
@@ -45,7 +45,10 @@
     }
 
     function deletePost() {
-
+      bleets.deleteBleet(vm.post.id)
+        .then(function(){
+          $rootScope.$broadcast('bleetDeleted');
+        });
     }
   }
 
