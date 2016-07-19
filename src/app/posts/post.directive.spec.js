@@ -65,7 +65,23 @@
     });
 
     describe('when method', function () {
-      
+
+      describe('delete() is called', function(){
+        it('calls the deleteBleet function', function(){
+          vm.delete();
+
+          expect(bleets.deleteBleet).toHaveBeenCalledWith(1);
+        });
+
+        it('publishes event on successful deletion', inject(function($rootScope){
+          spyOn($rootScope, '$broadcast');
+
+          vm.delete();
+          $rootScope.$apply();
+
+          expect($rootScope.$broadcast).toHaveBeenCalledWith('bleetDeleted');
+        }));
+      });
     });
   });
 })();

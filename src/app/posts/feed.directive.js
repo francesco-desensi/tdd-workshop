@@ -31,6 +31,7 @@
     function activate() {
       vm.updateFeed();
       $scope.$on('newBleetPosted', vm.updateFeed);
+      $scope.$on('bleetDeleted', vm.updateFeed);
     }
 
     function bindBleets(bleets) {
